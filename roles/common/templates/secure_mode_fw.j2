@@ -1,0 +1,38 @@
+# ----------- Maintenance mode firewall rules -------------
+# Modify this as required for the secure mode
+# In this sample, only the access for the {{ TEST_SECURE_API_NAME }} is allowed. Everything else is blocked. 
+
+#Give access to DHCP server
+*mangle
+-A POSTROUTING -o br1 -p udp -m udp --dport 68 -j CHECKSUM --checksum-fill
+COMMIT
+
+#*nat
+#:POSTROUTING - [0:0]
+#:INPUT - [0:0]
+#:OUTPUT - [0:0]
+#:PREROUTING - [0:0]
+#COMMIT
+*filter
+#:INPUT - [0:0]
+#:FORWARD - [0:0]
+#:OUTPUT - [0:0]
+
+# {{ TEST_SECURE_API_NAME }}} - For Data API port {{ TEST_SECURE_API_PORT }}
+-A INPUT   -p tcp -d {{ TEST_SECURE_API_IP }} --dport {{ TEST_SECURE_API_PORT }} -j ACCEPT
+-A FORWARD -p tcp -d {{ TEST_SECURE_API_IP }} --dport {{ TEST_SECURE_API_PORT }} -j ACCEPT
+-A OUTPUT  -p tcp -d {{ TEST_SECURE_API_IP }} --dport {{ TEST_SECURE_API_PORT }} -j ACCEPT
+-A INPUT   -p tcp -s {{ TEST_SECURE_API_IP }} --sport {{ TEST_SECURE_API_PORT }} -j ACCEPT
+-A FORWARD -p tcp -s {{ TEST_SECURE_API_IP }} --sport {{ TEST_SECURE_API_PORT }} -j ACCEPT
+-A OUTPUT  -p tcp -s {{ TEST_SECURE_API_IP }} --sport {{ TEST_SECURE_API_PORT }} -j ACCEPT
+
+
+#Give access to	  DHCP server
+-A INPUT -i br1 -p udp -m udp -m multiport --dports {{ DHCP_PORT_1 }},{{ DHCP_PORT_2 }} -j ACCEPT
+-A INPUT -i br1 -p tcp -m tcp -m multiport --dports {{ DHCP_PORT_1 }},{{ DHCP_PORT_2 }} -j ACCEPT
+
+-A INPUT -j DROP
+-A FORWARD -j DROP
+-A OUTPUT -j DROP
+
+COMMIT

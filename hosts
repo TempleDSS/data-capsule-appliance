@@ -1,0 +1,6 @@
+[dchosts]
+
+# Add the DC backend required hosts to this file
+
+#example redhat container
+192.168.56.100

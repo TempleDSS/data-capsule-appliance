@@ -1,0 +1,6 @@
+---
+- import_tasks: installPackages.yml
+- import_tasks: setupIPtables.yml
+- import_tasks: userConfiguration.yml
+- import_tasks: backendScriptConfiguration.yml
+- import_tasks: configureFirewallRules.yml

@@ -1,0 +1,60 @@
+---
+# checkout the backend code from git
+- git:
+   repo: 'https://github.com/htrc/HTRC-DataCapsules.git'
+   dest: "{{ GIT_CLONE_DIR }}"
+   version: IMSL
+   force: yes
+
+# Replace the first occurrence of the SCRIPT_DIR with the full path of the script directory 
+- name: Configure qemu-ifup
+  command: "sed -i 's#SCRIPT_DIR=.*#SCRIPT_DIR={{ SCRIPT_DIR }}#' {{ GIT_CLONE_DIR }}/backend/qemu-ifup"
+
+- name: Copy qemu-ifup
+  command: "cp {{ GIT_CLONE_DIR }}/backend/qemu-ifup /etc/qemu-ifup"
+
+
+# Cleans and configures the scripts
+- name: Clean the SCRIPT_DIR
+  file:
+    state: absent
+    path: "{{ SCRIPT_DIR }}"
+
+- name: Copy backend scripts to the SCRIPTS_DIR 
+  command: "mv {{ GIT_CLONE_DIR }}/backend {{ SCRIPT_DIR }}"
+
+# Modify permisions for the script directory
+# Move command above creates the SCRIPT_DIR
+- file:
+   path: "{{ SCRIPT_DIR }}"
+   state: directory
+   mode: 0755
+   recurse: yes
+
+- name: Replace htrcvirt username with HOST_USERNAME
+  command: "sed -i 's/htrcvirt/{{ HOST_USERNAME }}/g' capsules.cfg configure createvm.sh deletevm.sh"
+  args:
+    chdir: "{{ SCRIPT_DIR }}"
+
+- name: Copy the free_hosts file to the HOST_USERNAME home directory
+  command: "cp {{ SCRIPT_DIR }}/free_hosts /home/{{ HOST_USERNAME }}/"
+
+# Configuring tapinit
+- name: Remove the existing tapinit file
+  file:
+    state: absent
+    path: "{{ SCRIPT_DIR }}/tapinit"
+
+- name: Configure tapinit
+  command: "make"
+  args:
+    chdir: "{{ SCRIPT_DIR }}/tapinit-make"
+
+- name: Copy tapinit
+  command: "cp {{ SCRIPT_DIR }}/tapinit-make/tapinit {{ SCRIPT_DIR }}/tapinit"
+
+- file:
+   path: "{{ SCRIPT_DIR }}/tapinit"
+   owner: root
+   group: kvm
+   mode: "ug+s"

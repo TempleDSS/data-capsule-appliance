@@ -1,0 +1,24 @@
+# Variables that are visible from all roles
+
+# iptables file
+# If you change the following IP range, then you need to change them in multiple places
+# in the backend scripts as well. Please refer to: 
+# https://docs.google.com/document/d/13CLw8s6LMdeBGE4ovdE-ClYF4zIaowMVsnSAaUevOE4/edit?usp=sharing
+
+DC_IP_RANGE: '192.168.53.0/24'
+
+# DC host user details
+HOST_USERNAME: dc-host
+
+# script location details
+SCRIPT_DIR: '/home/dc-host-bin'
+GIT_CLONE_DIR: '/tmp/htrc-repo'
+
+# secure mode accessible servers
+TEST_SECURE_API_NAME: 'Test Secure API'
+TEST_SECURE_API_IP: 8.8.8.8
+TEST_SECURE_API_PORT: 80
+
+# secure mode accessible dhcp server ports
+DHCP_PORT_1: 53
+DHCP_PORT_2: 67

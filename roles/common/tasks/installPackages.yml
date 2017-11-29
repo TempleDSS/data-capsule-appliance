@@ -1,0 +1,35 @@
+---
+- name: Update the cache
+  shell: yum -y update
+  ignore_errors: true
+  when: ansible_os_family == "RedHat"
+
+- name: Add EPEL yum repository
+  yum_repository:
+   name: epel
+   description: EPEL YUM repo
+   baseurl: https://download.fedoraproject.org/pub/epel/7/x86_64/
+   gpgcheck: no
+
+- name: Install required packages
+  package: name={{ item }} state=present
+  with_items:
+   - dnsmasq 
+   - bridge-utils
+   - genisoimage
+   - expect
+   - mlocate
+   - zlib-devel
+   - glib2-devel
+   - ntfsprogs
+   - ntfs-3g
+   - nc
+   - wget
+   - git
+   - gcc
+   - qemu
+   - python-pip
+   - python-virtualenv
+
+- pip:
+   name: negotiator-guest

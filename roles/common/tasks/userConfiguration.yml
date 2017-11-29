@@ -1,0 +1,13 @@
+---
+- user:
+    name: '{{ HOST_USERNAME }}'
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+- template:
+   src: ../templates/dcHostUserPermissions.j2
+   dest: /etc/sudoers.d/dcHostUserPermissions
+   owner: root
+   group: root
+   mode: 0440
