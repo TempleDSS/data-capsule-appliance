@@ -16,6 +16,8 @@ You need to install Ansible in the machine that you are using for host provision
 
 ### Deploying
 
+First add the IP Addresses of the hosts that you need to provision in to the hosts file. 
+
 After installing Ansible, you can run 
 
 ```
