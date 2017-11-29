@@ -18,7 +18,7 @@ You need to install Ansible in the machine that you are using for host provision
 
 First add the IP Addresses of the hosts that you need to provision in to the hosts file. 
 
-After installing Ansible, you can run 
+Then, after installing Ansible, you can run 
 
 ```
 ansible-playbook -k -i hosts site.yml
