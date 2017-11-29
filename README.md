@@ -13,6 +13,7 @@ git clone https://github.com/Data-to-Insight-Center/Data-Capsule-Appliance-Host.
 ### Prerequisites
 
 You need to install Ansible in the machine that you are using for host provisioning. Refer to http://docs.ansible.com/ansible/latest/intro_installation.html for more details. 
+In the host machine, you need to have ssh and python installed (for Ansible).
 
 ### Deploying
 
