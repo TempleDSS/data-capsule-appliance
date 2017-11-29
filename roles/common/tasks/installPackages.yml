@@ -32,4 +32,4 @@
    - python-virtualenv
 
 - pip:
-   name: negotiator-guest
+   name: negotiator-host
