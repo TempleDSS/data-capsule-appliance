@@ -1,16 +1,20 @@
 ---
 # Configure and copy the firewall files to the script directory
 
-- template:
-   src: ../templates/maintenance_mode_fw.j2
-   dest: "{{ SCRIPT_DIR }}/maintenance_mode.fw"
-   owner: root
-   group: root
-   mode: 0755
+- name: Copy the firewall rules file for the maintenance mode 
+  become: true
+  template:
+    src: ../templates/maintenance_mode_fw.j2
+    dest: "{{ SCRIPT_DIR }}/maintenance_mode.fw"
+    owner: root
+    group: root
+    mode: 0755
 
-- template:
-   src: ../templates/secure_mode_fw.j2
-   dest: "{{ SCRIPT_DIR }}/secure_mode.fw"
-   owner: root
-   group: root
-   mode: 0755
+- name: Copy the firewall rules file for the secure mode 
+  become: true
+  template:
+    src: ../templates/secure_mode_fw.j2
+    dest: "{{ SCRIPT_DIR }}/secure_mode.fw"
+    owner: root
+    group: root
+    mode: 0755

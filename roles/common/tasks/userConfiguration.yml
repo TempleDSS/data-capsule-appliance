@@ -1,13 +1,17 @@
 ---
-- user:
+- name: Create the data capsule hosting user
+  become: true
+  user:
     name: '{{ HOST_USERNAME }}'
     generate_ssh_key: yes
     ssh_key_bits: 2048
     ssh_key_file: .ssh/id_rsa
 
-- template:
-   src: ../templates/dcHostUserPermissions.j2
-   dest: /etc/sudoers.d/dcHostUserPermissions
-   owner: root
-   group: root
-   mode: 0440
+- name: Add the data capsule hosting user to the sudoers
+  become: true
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: "^{{ HOST_USERNAME }}"
+    line: "{{ HOST_USERNAME }}  ALL=(ALL) NOPASSWD: {{ SCRIPT_DIR }}/sshfwd.sh, NOPASSWD: {{ SCRIPT_DIR }}/fw.sh, NOPASSWD: {{ SCRIPT_DIR }} launchkvm.sh, NOPASSWD: {{ SCRIPT_DIR }}/remove-vm-iptables.sh, NOPASSWD: /bin/mount, NOPASSWD: /bin/umount"
+    validate: 'visudo -cf %s'

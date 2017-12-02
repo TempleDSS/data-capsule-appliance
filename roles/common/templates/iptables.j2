@@ -26,15 +26,15 @@ COMMIT
 -A INPUT -i lo -j ACCEPT
 
 # Give access to SSH port of the DC API server
--A INPUT -s  DC_API_SERVER_IP -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+-A INPUT -s  {{ DC_API_SERVER_IP }} -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
 
 # VM ports open to the world (Select the port range for capsules)
 -A INPUT -p tcp --dport 16000:16079 -j ACCEPT
-#Give access to Secured services and DC API
-# Secure service
--A INPUT -s SECURED_SERVER_IP -p tcp --dport SECURED_SERVICE_PORT -j ACCEPT
+
+#Give access to the DC API
+
 # DC API
--A INPUT -s DC_API_SERVER_IP -p tcp --dport DC_API_PORT -j ACCEPT
+#-A INPUT -s {{ DC_API_SERVER_IP }} -p tcp --dport {{ DC_API_PORT }} -j ACCEPT
 # Reject everything else
 #
 -A INPUT -j REJECT --reject-with icmp-host-prohibited

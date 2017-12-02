@@ -22,3 +22,7 @@ TEST_SECURE_API_PORT: 80
 # secure mode accessible dhcp server ports
 DHCP_PORT_1: 53
 DHCP_PORT_2: 67
+
+# DC Api related configs
+DC_API_SERVER_IP: 192.168.2.3
+DC_API_PORT: 80

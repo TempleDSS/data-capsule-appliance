@@ -34,5 +34,7 @@
    - python-pip
    - python-virtualenv
 
-- pip:
+- name: Install negotiator-guest 
+  become: true
+  pip:
    name: negotiator-host

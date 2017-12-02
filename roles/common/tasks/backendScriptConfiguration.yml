@@ -6,21 +6,27 @@
    version: IMSL
    force: yes
 
-# Replace the first occurrence of the SCRIPT_DIR with the full path of the script directory 
+# Add the full path of the script directory to the SCRIPT_DIR variable 
 - name: Configure qemu-ifup
-  command: "sed -i 's#SCRIPT_DIR=.*#SCRIPT_DIR={{ SCRIPT_DIR }}#' {{ GIT_CLONE_DIR }}/backend/qemu-ifup"
+  lineinfile:
+    path: "{{ GIT_CLONE_DIR }}/backend/qemu-ifup"
+    regexp: '^SCRIPT_DIR='
+    line: "SCRIPT_DIR={{ SCRIPT_DIR }}"
 
-- name: Copy qemu-ifup
+- name: Copy and replace qemu-ifup in the /etc directory
+  become: true
   command: "cp {{ GIT_CLONE_DIR }}/backend/qemu-ifup /etc/qemu-ifup"
 
 
 # Cleans and configures the scripts
 - name: Clean the SCRIPT_DIR
+  become: true
   file:
     state: absent
     path: "{{ SCRIPT_DIR }}"
 
 - name: Copy backend scripts to the SCRIPTS_DIR 
+  become: true
   command: "mv {{ GIT_CLONE_DIR }}/backend {{ SCRIPT_DIR }}"
 
 # Modify permisions for the script directory
@@ -32,11 +38,18 @@
    recurse: yes
 
 - name: Replace htrcvirt username with HOST_USERNAME
-  command: "sed -i 's/htrcvirt/{{ HOST_USERNAME }}/g' capsules.cfg configure createvm.sh deletevm.sh"
-  args:
-    chdir: "{{ SCRIPT_DIR }}"
+  replace:
+    path: "{{ item }}"
+    regexp: 'htrcvirt'
+    replace: "{{ HOST_USERNAME}}"
+  with_items: 
+    - "{{ SCRIPT_DIR }}/capsules.cfg"
+    - "{{ SCRIPT_DIR }}/configure"
+    - "{{ SCRIPT_DIR }}/createvm.sh"
+    - "{{ SCRIPT_DIR }}/deletevm.sh"
 
 - name: Copy the free_hosts file to the HOST_USERNAME home directory
+  become: true
   command: "cp {{ SCRIPT_DIR }}/free_hosts /home/{{ HOST_USERNAME }}/"
 
 # Configuring tapinit
@@ -53,8 +66,11 @@
 - name: Copy tapinit
   command: "cp {{ SCRIPT_DIR }}/tapinit-make/tapinit {{ SCRIPT_DIR }}/tapinit"
 
-- file:
-   path: "{{ SCRIPT_DIR }}/tapinit"
-   owner: root
-   group: kvm
-   mode: "ug+s"
+- name: Change permisions and ownership for the tapinit file
+  become: true
+  file:
+    path: "{{ SCRIPT_DIR }}/tapinit"
+    owner: root
+    group: kvm
+    mode: "ug+s"
+  
