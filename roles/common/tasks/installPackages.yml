@@ -1,10 +1,12 @@
 ---
 - name: Update the cache
+  become: true
   shell: yum -y update
   ignore_errors: true
   when: ansible_os_family == "RedHat"
 
 - name: Add EPEL yum repository
+  become: true
   yum_repository:
    name: epel
    description: EPEL YUM repo
@@ -12,6 +14,7 @@
    gpgcheck: no
 
 - name: Install required packages
+  become: true
   package: name={{ item }} state=present
   with_items:
    - dnsmasq 
