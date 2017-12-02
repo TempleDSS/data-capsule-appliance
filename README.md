@@ -22,16 +22,18 @@ You need to have an account to login in to the target machine with sudo access.
 
 1. Add the IP Addresses of the hosts that you need to provision in to the hosts file. 
 
-2. Change the username that will be used to login into the host provisioning machine at site.yml file. The default value is root. 
+2. Then run the following command inside the cloned directory. Be sure to replace the <login_username> with your remote username. 
 
 ```
-user: <login_username>
+ansible-playbook --user=<login_username> -k -i hosts site.yml --ask-become-pass
 ```
 
-3. Then run 
+3. Then you will be prompted to enter two password as following. Enter the login remote user password for the first prompt and that user's
+sudo password for the second prompt.
 
 ```
-ansible-playbook -k -i hosts site.yml
+SSH password:<login_user_password>
+SUDO password[defaults to SSH password]:<login_user_sudo_password>
 ```
 
-from the cloned directory. You'll have to provide the root password when prompted. 
+This would start up the provisioning of the host machine! You should not see any errors in the terminal when this is being executed. 
