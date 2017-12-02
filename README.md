@@ -16,11 +16,19 @@ You need to install Ansible in the machine that you are using for host provision
 
 In the host machine, you need to have ssh and python installed (for Ansible).
 
+You need to have an account to login in to the target machine with sudo access. 
+
 ### Deploying
 
-First add the IP Addresses of the hosts that you need to provision in to the hosts file. 
+1. Add the IP Addresses of the hosts that you need to provision in to the hosts file. 
 
-Then, after installing Ansible, you can run 
+2. Change the username that will be used to login into the host provisioning machine at site.yml file. The default value is root. 
+
+```
+user: <login_username>
+```
+
+3. Then run 
 
 ```
 ansible-playbook -k -i hosts site.yml
