@@ -1,7 +1,6 @@
 ---
 - name: IMLS Data Capsule Backend automation
   hosts: dchosts
-  user: root
 
   roles:
     - common
