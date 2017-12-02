@@ -4,3 +4,4 @@
 - import_tasks: userConfiguration.yml
 - import_tasks: backendScriptConfiguration.yml
 - import_tasks: configureFirewallRules.yml
+- import_tasks: cleanup.yaml
