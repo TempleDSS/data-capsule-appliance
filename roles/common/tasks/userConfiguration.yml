@@ -12,5 +12,5 @@
     path: /etc/sudoers
     state: present
     regexp: "^{{ HOST_USERNAME }}"
-    line: "{{ HOST_USERNAME }}  ALL=(ALL) NOPASSWD: {{ SCRIPT_DIR }}/sshfwd.sh, NOPASSWD: {{ SCRIPT_DIR }}/fw.sh, NOPASSWD: {{ SCRIPT_DIR }} launchkvm.sh, NOPASSWD: {{ SCRIPT_DIR }}/remove-vm-iptables.sh, NOPASSWD: /bin/mount, NOPASSWD: /bin/umount"
+    line: "{{ HOST_USERNAME }}  ALL=(ALL) NOPASSWD: {{ SCRIPT_DIR }}/sshfwd.sh, NOPASSWD: {{ SCRIPT_DIR }}/fw.sh, NOPASSWD: {{ SCRIPT_DIR }}/launchkvm.sh, NOPASSWD: {{ SCRIPT_DIR }}/remove-vm-iptables.sh, NOPASSWD: /bin/mount, NOPASSWD: /bin/umount"
     validate: 'visudo -cf %s'
