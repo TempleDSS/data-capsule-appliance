@@ -37,3 +37,16 @@ SUDO password[defaults to SSH password]:<login_user_sudo_password>
 ```
 
 This would start up the provisioning of the host machine! You should not see any errors in the terminal when this is being executed. 
+
+### Result
+
+The aforementioned steps would provision the target machine creating a DC hosting user with the default password (in group_vars/all file).
+
+Then you can login into this user and deploy the Data Capsule or deploy the DC Api. 
+
+## Configurations
+
+All the variables for the configurations can be found at the following file.
+```
+group_vars/all
+```
