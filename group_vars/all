@@ -9,6 +9,7 @@ DC_IP_RANGE: '192.168.53.0/24'
 
 # DC host user details
 HOST_USERNAME: dc-host
+HOST_USER_PASSWORD: test
 
 # script location details
 SCRIPT_DIR: '/home/dc-host-bin'
@@ -24,5 +25,5 @@ DHCP_PORT_1: 53
 DHCP_PORT_2: 67
 
 # DC Api related configs
-DC_API_SERVER_IP: 192.168.2.3
+DC_API_SERVER_IP: 127.0.0.1
 DC_API_PORT: 80

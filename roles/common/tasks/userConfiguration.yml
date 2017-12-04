@@ -3,9 +3,8 @@
   become: true
   user:
     name: '{{ HOST_USERNAME }}'
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa
+    password: "{{ HOST_USER_PASSWORD | password_hash('sha512') }}"
+    update_password: on_create
 
 - name: Add the data capsule hosting user to the sudoers
   become: true
