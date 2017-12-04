@@ -52,6 +52,12 @@
   become: true
   command: "cp {{ SCRIPT_DIR }}/free_hosts /home/{{ HOST_USERNAME }}/"
 
+- name: Configure capsule.cfg DC endpoint
+  lineinfile:
+    path: "{{ SCRIPT_DIR }}/capsules.cfg"
+    regexp: '^DB_URL='
+    line: "DB_URL={{ DC_API_SERVER_IP }}/upload"
+
 # Configuring tapinit
 - name: Remove the existing tapinit file
   file:
