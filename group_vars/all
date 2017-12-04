@@ -16,9 +16,10 @@ SCRIPT_DIR: '/home/dc-host-bin'
 GIT_CLONE_DIR: '/tmp/htrc-repo'
 
 # secure mode accessible servers
+# currently uses the google dns server for demonstration purposes
 TEST_SECURE_API_NAME: 'Test Secure API'
 TEST_SECURE_API_IP: 8.8.8.8
-TEST_SECURE_API_PORT: 80
+TEST_SECURE_API_PORT: 53
 
 # secure mode accessible dhcp server ports
 DHCP_PORT_1: 53
