@@ -15,7 +15,7 @@
   become: true
   template:
     src: ../templates/iptables.j2
-    dest: /etc/sysconfig/iptables
+    dest: /etc/sysconfig/iptables_dataCapsule
     owner: root
     group: root
     mode: 0644

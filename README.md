@@ -21,7 +21,7 @@ Install python and python passlib module in the same machine.
 
 In the target machine, you need to have ssh and python installed (for Ansible).
 
-You need to have an account to login in to the target machine with sudo access. 
+You need to have an account (<login_username>) to login in to the target machine with sudo access. 
 
 ### Deploying
 
@@ -42,6 +42,10 @@ SUDO password[defaults to SSH password]:<login_user_sudo_password>
 ```
 
 This would start up the provisioning of the host machine! You should not see any errors in the terminal when this is being executed. 
+
+4. After provisioning the machine, you need to add the iptable rules to your existing iptables(/etc/sysconfig/iptables) file. 
+IPtable rules required for the Data Capsule will be available at /etc/sysconfig/iptables_dataCapsule in the provisioned host. 
+
 
 ### Result
 
