@@ -15,7 +15,7 @@ git clone https://github.com/Data-to-Insight-Center/Data-Capsule-Appliance-Host.
 #### Machine used for provisioning with Ansible
 You need to install Ansible in the machine that you are using for host provisioning. Refer to http://docs.ansible.com/ansible/latest/intro_installation.html for more details. 
 
-Install python and python passlib module in the same machine. 
+Install python and python passlib module (http://passlib.readthedocs.io/en/stable/install.html) in the same machine. 
 
 #### Target machine (Where DC would be deployed)
 
