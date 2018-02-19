@@ -1,5 +1,5 @@
 ---
-- name: IMLS Data Capsule Backend automation
+- name: Data Capsule Appliance Host Automation
   hosts: dchosts
 
   roles:
