@@ -56,7 +56,7 @@
   lineinfile:
     path: "{{ SCRIPT_DIR }}/capsules.cfg"
     regexp: '^DB_URL='
-    line: "DB_URL={{ DC_API_SERVER_IP }}:{{ DC_API_PORT }}/upload"
+    line: "DB_URL={{ DC_API_SERVER_IP }}:{{ DC_API_PORT }}/sloan-ws/upload"
 
 # Configuring tapinit
 - name: Remove the existing tapinit file
