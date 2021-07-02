@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://java.sun.com/xml/ns/javaee"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+		 version="2.5">
+
+	<display-name>Sloan Web Service</display-name>
+
+	<servlet>
+		<servlet-name>jersey-servlet</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+
+		<!-- entry point of the ws -->
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>edu.indiana.d2i.sloan.SloanWSApplication</param-value>
+		</init-param>
+
+		<!-- json support -->
+		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<!-- log file path -->
+		<init-param>
+			<param-name>log4j.properties.path</param-name>
+			<param-value>/etc/htrc/dcapi/log4j.properties</param-value>
+		</init-param>
+	</servlet>
+
+	<!-- JWT servlet filter -->
+
+	<filter>
+		<filter-name>JWTFilter</filter-name>
+		<filter-class>edu.indiana.d2i.htrc.security.JWTServletFilter</filter-class>
+		<init-param>
+			<param-name>htrc.jwtfilter.config</param-name>
+			<param-value>/etc/htrc/dcapi/jwtfilter.conf</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>JWTFilter</filter-name>
+		<url-pattern>/createvm</url-pattern>
+		<url-pattern>/deletevm</url-pattern>
+		<url-pattern>/launchvm</url-pattern>
+		<url-pattern>/show</url-pattern>
+		<url-pattern>/stopvm</url-pattern>
+		<url-pattern>/switchvm</url-pattern>
+		<url-pattern>/listimage</url-pattern>
+		<url-pattern>/updateuserkey</url-pattern>
+		<url-pattern>/updateusertou</url-pattern>
+		<url-pattern>/updatevm</url-pattern>
+		<url-pattern>/updateuseremail</url-pattern>
+		<url-pattern>/migratevm</url-pattern>
+		<url-pattern>/addsharees</url-pattern>
+		<url-pattern>/deletesharees</url-pattern>
+		<url-pattern>/managecontroller</url-pattern>
+		<url-pattern>/download</url-pattern>
+		<url-pattern>/getvmresults</url-pattern>
+		<url-pattern>/updatecustoscreds</url-pattern>
+		<url-pattern>/exitsharee</url-pattern>
+		<url-pattern>/addsupportuser</url-pattern>
+		<url-pattern>/checkdownloadability</url-pattern>
+	</filter-mapping>
+
+	<servlet-mapping>
+		<servlet-name>jersey-servlet</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+</web-app>
