@@ -1,0 +1,26 @@
+# ----------- Maintenance mode firewall rules -------------
+# Modify this as required
+# In this sample, only the access for the {{ TEST_SECURE_API_NAME }} is blocked. Everything else is allowed for the Data Capsule. 
+
+*nat
+#:POSTROUTING - [0:0]
+#:INPUT - [0:0]
+#:OUTPUT - [0:0]
+#:PREROUTING - [0:0]
+-A PREROUTING -p tcp --dport %SSH_PORT% -j DNAT --to-destination %IP%:22
+#-A POSTROUTING -j MASQUERADE
+COMMIT
+*filter
+#:INPUT - [0:0]
+#:FORWARD - [0:0]
+#:OUTPUT - [0:0]
+-A INPUT   -d {{ TEST_SECURE_API_IP }} -j DROP
+-A FORWARD -d {{ TEST_SECURE_API_IP }} -j DROP
+-A OUTPUT  -d {{ TEST_SECURE_API_IP }} -j DROP
+-A INPUT   -s {{ TEST_SECURE_API_IP }} -j DROP
+-A FORWARD -s {{ TEST_SECURE_API_IP }} -j DROP
+-A OUTPUT  -s {{ TEST_SECURE_API_IP }} -j DROP
+-A INPUT -j ACCEPT
+-A FORWARD -j ACCEPT
+-A OUTPUT -j ACCEPT
+COMMIT

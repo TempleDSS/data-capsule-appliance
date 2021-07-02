@@ -1,0 +1,103 @@
+---
+- name: Allow IP forwarding
+  become: true
+  shell: grep 'net.ipv4.ip_forward' /etc/sysctl.conf && sed -i  's#net\.ipv4\.ip_forward.*#net\.ipv4\.ip_forward = 1#' /etc/sysctl.conf || echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
+
+- name: Install the bridge
+  become: true
+  command: modprobe br_netfilter
+
+- name: Enable iptables to handle bridge packets
+  become: true
+  command: echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+# ============ Adding the required iptable rules =================
+# [WARNING] Please be careful when modifying the following iptable rules! 
+# Steps
+#   1. Save the current iptable rules into an Ansible variable
+#   2. Add each iptable rule if they do not exist 
+#   3. Save and restart the firewall rules
+
+- name: Save the current mangle IP tables rules
+  become: true
+  shell: /sbin/iptables -t mangle -L
+  register: iptables_rules_mangle
+  check_mode: no
+  changed_when: false
+
+- name: Save the current nat IP tables rules
+  become: true
+  shell: /sbin/iptables -t nat -L
+  register: iptables_rules_nat
+  check_mode: no
+  changed_when: false
+
+- name: Save the current IP tables rules
+  become: true
+  shell: /sbin/iptables -L
+  register: iptables_rules
+  check_mode: no
+  changed_when: false
+
+- name: br1 POSTROUTING rule
+  become: true
+  command: /sbin/iptables -t mangle -I POSTROUTING -o br1 -p udp -m udp --dport 68 -j CHECKSUM --checksum-fill -m comment --comment "checksum-fill-br1"
+  when: iptables_rules_mangle.stdout.find("checksum-fill-br1") == -1
+
+
+- name: tcp DC_IP_RANGE POSTROUTING rule
+  become: true
+  command: "/sbin/iptables -t nat -I POSTROUTING -s {{ DC_IP_RANGE }} ! -d {{ DC_IP_RANGE }} -p tcp -j MASQUERADE --to-ports 1024-65535 -m comment --comment 'tcp_postroute_open'"
+  when: iptables_rules_nat.stdout.find("tcp_postroute_open") == -1
+
+- name: udp DC_IP_RANGE POSTROUTING rule
+  become: true
+  command: "/sbin/iptables -t nat -I POSTROUTING -s {{ DC_IP_RANGE }} ! -d {{ DC_IP_RANGE }} -p udp -j MASQUERADE --to-ports 1024-65535 -m comment --comment 'udp_postroute_open'"
+  when: iptables_rules_nat.stdout.find("udp_postroute_open") == -1
+
+- name: DC_IP_RANGE -j POSTROUTING rule
+  become: true
+  command: "/sbin/iptables -t nat -I POSTROUTING -s {{ DC_IP_RANGE }} ! -d {{ DC_IP_RANGE }} -j MASQUERADE -m comment --comment 'postroute_j'"
+  when: iptables_rules_nat.stdout.find("postroute_j") == -1
+
+
+
+- name: Allow established incoming connections
+  become: true
+  command: /sbin/iptables -I INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment 'accept_est'
+  when: iptables_rules.stdout.find("accept_est") == -1
+
+- name: Allow ICMP incoming connections
+  become: true
+  command: /sbin/iptables -I INPUT -p icmp -j ACCEPT -m comment --comment 'accept_icmp'
+  when: iptables_rules.stdout.find("accept_icmp") == -1
+
+- name: Allow lo incoming connections
+  become: true
+  command: /sbin/iptables -I INPUT -i lo -j ACCEPT -m comment --comment 'accept_lo'
+  when: iptables_rules.stdout.find("accept_lo") == -1
+
+- name: Allow DC API server SSH port
+  become: true
+  command: "/sbin/iptables -I INPUT -s  {{ DC_API_SERVER_IP }} -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT -m comment --comment 'allow_DC_API_SSH_PORT'"
+  when: iptables_rules.stdout.find("allow_DC_API_SSH_PORT") == -1
+
+- name: Allow port range for DCs
+  become: true
+  command: /sbin/iptables -I INPUT -p tcp --dport 16000:16079 -j ACCEPT -m comment --comment 'allow_DC_port_range'
+  when: iptables_rules.stdout.find("allow_DC_port_range") == -1
+
+- name: Allow forwarding for DC IP range
+  become: true
+  command: "/sbin/iptables -I FORWARD -d {{ DC_IP_RANGE }} -j ACCEPT -m comment --comment 'allow_dc_ip_range_forward'"
+  when: iptables_rules.stdout.find("allow_dc_ip_range_forward") == -1
+
+
+- name: Save iptables rules
+  become: true
+  shell: /sbin/service iptables save
+
+- name: restart iptables
+  become: true
+  shell: systemctl restart iptables
+

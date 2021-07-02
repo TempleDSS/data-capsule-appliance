@@ -1,0 +1,7 @@
+---
+# Cleanup the automation
+
+- name: Clean the GIT_CLONE_DIR
+  file:
+    state: absent
+    path: "{{ GIT_CLONE_DIR }}"

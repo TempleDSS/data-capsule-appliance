@@ -1,0 +1,6 @@
+---
+- name: Data Capsule Appliance Host Automation
+  hosts: dchosts
+
+  roles:
+    - common

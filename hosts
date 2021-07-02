@@ -1,0 +1,11 @@
+[dchosts]
+
+# Add the targeted machine IPs here
+
+#example ip 
+192.168.56.100
+
+# If you are provisioning the same machine that you are running Ansible on, 
+# uncomment the following line and comment out the rest. 
+
+#localhost ansible_connection=local

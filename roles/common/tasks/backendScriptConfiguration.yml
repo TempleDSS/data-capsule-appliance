@@ -1,0 +1,82 @@
+---
+# checkout the backend code from git
+- git:
+   repo: 'https://github.com/htrc/HTRC-DataCapsules.git'
+   dest: "{{ GIT_CLONE_DIR }}"
+   version: IMSL
+   force: yes
+
+# Add the full path of the script directory to the SCRIPT_DIR variable 
+- name: Configure qemu-ifup
+  lineinfile:
+    path: "{{ GIT_CLONE_DIR }}/backend/qemu-ifup"
+    regexp: '^SCRIPT_DIR='
+    line: "SCRIPT_DIR={{ SCRIPT_DIR }}"
+
+- name: Copy and replace qemu-ifup in the /etc directory
+  become: true
+  command: "cp {{ GIT_CLONE_DIR }}/backend/qemu-ifup /etc/qemu-ifup"
+
+
+# Cleans and configures the scripts
+- name: Clean the SCRIPT_DIR
+  become: true
+  file:
+    state: absent
+    path: "{{ SCRIPT_DIR }}"
+
+- name: Copy backend scripts to the SCRIPTS_DIR 
+  become: true
+  command: "mv {{ GIT_CLONE_DIR }}/backend {{ SCRIPT_DIR }}"
+
+# Modify permisions for the script directory
+# Move command above creates the SCRIPT_DIR
+- file:
+   path: "{{ SCRIPT_DIR }}"
+   state: directory
+   mode: 0755
+   recurse: yes
+
+- name: Replace htrcvirt username with HOST_USERNAME
+  replace:
+    path: "{{ item }}"
+    regexp: 'htrcvirt'
+    replace: "{{ HOST_USERNAME}}"
+  with_items: 
+    - "{{ SCRIPT_DIR }}/capsules.cfg"
+    - "{{ SCRIPT_DIR }}/configure"
+    - "{{ SCRIPT_DIR }}/createvm.sh"
+    - "{{ SCRIPT_DIR }}/deletevm.sh"
+
+- name: Copy the free_hosts file to the HOST_USERNAME home directory
+  become: true
+  command: "cp {{ SCRIPT_DIR }}/free_hosts /home/{{ HOST_USERNAME }}/"
+
+- name: Configure capsule.cfg DC endpoint
+  lineinfile:
+    path: "{{ SCRIPT_DIR }}/capsules.cfg"
+    regexp: '^DB_URL='
+    line: "DB_URL={{ DC_API_SERVER_IP }}:{{ DC_API_PORT }}/sloan-ws/upload"
+
+# Configuring tapinit
+- name: Remove the existing tapinit file
+  file:
+    state: absent
+    path: "{{ SCRIPT_DIR }}/tapinit"
+
+- name: Configure tapinit
+  command: "make"
+  args:
+    chdir: "{{ SCRIPT_DIR }}/tapinit-make"
+
+- name: Copy tapinit
+  command: "cp {{ SCRIPT_DIR }}/tapinit-make/tapinit {{ SCRIPT_DIR }}/tapinit"
+
+- name: Change permisions and ownership for the tapinit file
+  become: true
+  file:
+    path: "{{ SCRIPT_DIR }}/tapinit"
+    owner: root
+    group: kvm
+    mode: "ug+s"
+  
