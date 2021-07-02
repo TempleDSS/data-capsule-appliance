@@ -1,0 +1,8 @@
+Documentation
+
+Data Capsule Documentation
+
+The following repos are being merged to reorganize the code for easy updates.
+
+https://github.com/Data-to-Insight-Center/Data-Capsule-Appliance-Host/
+https://github.com/htrc/HTRC-DataCapsules/
