@@ -33,6 +33,6 @@ git clone https://github.com/TempleDSS/data-capsule-appliance.git
 
 ansible-playbook -k -i hosts site.yml 
 
-# Original redhat repo is referenced from following github url
+# Redhat repo is referenced from following:
 
 https://github.com/Data-to-Insight-Center/Data-Capsule-Appliance-Host
