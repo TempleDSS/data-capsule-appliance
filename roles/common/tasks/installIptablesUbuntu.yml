@@ -1,0 +1,22 @@
+---
+# iptables is not installed in ubuntu by default and hence need to install it and disable firewalld
+
+- name: stop firewalld
+  become: true
+  command: "ufw stop"
+  when: ansible_os_family == "Ubuntu" 
+
+- name: mask firewalld
+  become: true
+  command: "ufw mask"
+  when: ansible_os_family == "Ubuntu"
+
+- name: enable iptables
+  become: true
+  command: "ufw enable"
+  when: ansible_os_family == "Ubuntu"
+
+- name: start iptables
+  become: true
+  command: "ufw start"
+  when: ansible_os_family == "Ubuntu"

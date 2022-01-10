@@ -1,23 +1,38 @@
-**Data-capsule**
+# Data Capsule VM on Ubuntu
 
-Data capsule appliance for virtual, controlled access to protected data
+Data capsule virtual machine existed in redhat OS flavor which needed subscription. To make it cost effective and widely usable, Ansible playbooks for Ubuntu OS Data Capsule VMs have been written.
 
-**First steps**
+# Need for ubuntu based data capsule VMs:
 
-Cloned repos 1 and 2 and created a new directory structure with respective content
+1. Time needed to deploy the DCA guest setup on physical server took more than 2hours.
+2. Jetstream cloud provides the VMs for academic research. Jetstream cloud has ubuntu and centos images. Hence in order to make data capsule VMs cloud compatible, Ansible playbooks have been written for ubuntu distribution.
+3. Data capsule VMS are scalable by just updating the hosts in inventory file.
+4. Complexity is reduced as the users are generally required to clone the repo and execute the playbook.
+5. Reduction in infrastructure cost (physical server is $1500 -$7000 and additional electricity, air conditioning and space requirements).
 
-**Relevant repos**
+# Ansible host server specification
 
-1. https://github.com/htrc/HTRC-DataCapsules
-2. https://github.com/Data-to-Insight-Center/Data-Capsule-Appliance-Host
-3. https://github.com/Data-to-Insight-Center/Data-Capsule-Appliance-Guest
+Operating system: Ubuntu 20.04
+Jetstream server specifications
+Size: m1.small
+CPU: 2
+Mem: 4GB
+Disk: 20GB
 
-**Merge details**
+# Github urls
 
-We have merged the ansible-host and htrc repo for easier code reviews, analysis and updates.
+**Ubuntu data capsule vm**
 
-**Branch details**
+https://github.com/AyishaT-Coder/DataCapsuleVMonUbuntu.git
 
-The 2 separate feature branches have been created to work on appliance host and node code
-1. dev-ansible-node
-2. dev-ansible-host
+# Clone the repo
+
+git clone https://github.com/AyishaT-Coder/DataCapsuleVMonUbuntu.git
+
+# Execute ansible playbook
+
+ansible-playbook -k -i hosts site.yml 
+
+# Original redhat repo is referenced from following github url
+
+https://github.com/Data-to-Insight-Center/Data-Capsule-Appliance-Host

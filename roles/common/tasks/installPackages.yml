@@ -1,0 +1,32 @@
+---
+
+- name: Install required packages
+  become: true
+  apt:
+     name: "{{ item }}" 
+     update_cache: true
+     state: present
+  with_items:
+   - dnsmasq 
+   - bridge-utils
+   - genisoimage
+   - expect
+   - mlocate
+   - zlib1g-dev
+   - libglib2.0-dev
+   - ntfs-3g
+   - netcat
+   - wget
+   - git
+   - gcc
+   - qemu
+   - iptables
+   - python3-pip
+   - python3-venv
+   - iptables-persistent
+   - netfilter-persistent
+
+- name: Install negotiator-guest 
+  become: true
+  pip:
+   name: negotiator-host
