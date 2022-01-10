@@ -23,11 +23,11 @@ Disk: 20GB
 
 **Ubuntu data capsule vm**
 
-https://github.com/AyishaT-Coder/DataCapsuleVMonUbuntu.git
+https://github.com/TempleDSS/data-capsule-appliance.git
 
 # Clone the repo
 
-git clone https://github.com/AyishaT-Coder/DataCapsuleVMonUbuntu.git
+git clone https://github.com/TempleDSS/data-capsule-appliance.git
 
 # Execute ansible playbook
 
