@@ -1,0 +1,127 @@
+{
+  "_comment": "Build with `packer build ubuntu.json`",
+  "builders": [
+    {
+      "boot_command": [
+        "{{ user `boot_command_prefix` }}",
+        "/install/vmlinuz noapic ",
+        "file=/floppy/{{ user `preseed` }} ",
+        "debian-installer={{ user `locale` }} auto locale={{ user `locale` }} kbd-chooser/method=us ",
+        "hostname={{ user `hostname` }} ",
+        "fb=false debconf/frontend=noninteractive ",
+        "keyboard-configuration/modelcode=SKIP ",
+        "keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+        "passwd/user-fullname={{ user `ssh_fullname` }} ",
+        "passwd/user-password={{ user `ssh_password` }} ",
+        "passwd/user-password-again={{ user `ssh_password` }} ",
+        "passwd/username={{ user `ssh_username` }} ",
+        "initrd=/install/initrd.gz -- fastboot <enter>"
+      ],
+      "disk_size": "{{ user `disk_size` }}",
+      "floppy_files": [
+        "http/{{ user `preseed` }}"
+      ],
+      "format": "qcow2",
+      "headless": "{{ user `headless` }}",
+      "iso_checksum": "{{ user `iso_checksum_type` }}:{{ user `iso_checksum` }}",
+      "iso_urls": [
+        "{{ user `iso_url` }}"
+      ],
+      "output_directory": "output-{{ user `vm_name` }}",
+      "qemuargs": [
+        [
+          "-m",
+          "{{ user `memory` }}"
+        ],
+        [
+          "-usb",
+          ""
+        ],
+        [
+          "-nographic",
+          ""
+        ],
+        [
+          "-smp",
+          "cpus={{ user `cpus`}}"
+        ]
+      ],
+      "shutdown_command": "echo '{{ user `ssh_password` }}'|sudo -S shutdown -P now",
+      "skip_compaction": "true",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_timeout": "10000s",
+      "ssh_username": "{{ user `ssh_username` }}",
+      "type": "qemu",
+      "vm_name": "{{ user `vm_name` }}"
+    }
+  ],
+  "provisioners": [
+    {
+      "destination": "{{user `user_home_dir`}}",
+      "source": "uploads",
+      "type": "file"
+    },
+    {
+      "environment_vars": [
+        "DESKTOP={{user `desktop`}}",
+        "UPDATE={{user `update`}}",
+        "SSH_USERNAME={{user `ssh_username`}}",
+        "SSH_PASSWORD={{user `ssh_password`}}",
+        "USER_HOME_DIR={{user `user_home_dir`}}",
+        "JDK_DOWNLOAD_URL={{user `jdk_download_url`}}",
+        "SCALA_DOWNLOAD_URL={{user `scala_download_url`}}",
+        "SBT_DOWNLOAD_URL={{user `sbt_download_url`}}",
+        "SPARK_DOWNLOAD_URL={{user `spark_download_url`}}",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}"
+      ],
+      "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/grubfix.sh",
+        "scripts/installPackages_vanilla.sh",
+        "scripts/negotiator-guest.sh",
+        "scripts/releaseResults.sh",
+        "scripts/worksetDownloader.sh",
+        "scripts/nfsMountScript.sh",
+        "scripts/desktop.sh",
+        "scripts/userProvisioning.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "inline": [
+        "rm -rf {{user `user_home_dir`}}/uploads"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "boot_command_prefix": "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+    "cleanup_pause": "",
+    "cpus": "2",
+    "custom_script": ".",
+    "desktop": "true",
+    "disk_size": "65536",
+    "headless": "true",
+    "hostname": "DataCapsule",
+    "iso_checksum": "8915fdefec347a3cd16279f82c94c3223ff5acb2",
+    "iso_checksum_type": "sha1",
+    "iso_name": "ubuntu-16.04.7-server-amd64.iso",
+    "iso_url": "https://releases.ubuntu.com/xenial/ubuntu-16.04.7-server-amd64.iso",
+    "jdk_download_url": "http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.tar.gz",
+    "locale": "en_US",
+    "memory": "2048",
+    "preseed": "preseed.cfg",
+    "sbt_download_url": "https://dl.bintray.com/sbt/debian/sbt-1.0.2.deb",
+    "scala_download_url": "www.scala-lang.org/files/archive/scala-2.11.6.deb",
+    "spark_download_url": "https://d3kbcqa49mib13.cloudfront.net/spark-2.2.0-bin-hadoop2.7.tgz",
+    "ssh_fullname": "dcuser",
+    "ssh_password": "dcuser",
+    "ssh_username": "dcuser",
+    "update": "true",
+    "user_home_dir": "/home/dcuser",
+    "vm_name": "ubuntu1604",
+    "vnc_port": "5900"
+  }
+}
