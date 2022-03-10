@@ -1,0 +1,3 @@
+[submodule "HTRC-DataCapsules"]
+	path = HTRC-DataCapsules
+	url = https://github.com/htrc/HTRC-DataCapsules
