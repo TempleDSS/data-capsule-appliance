@@ -46,6 +46,9 @@ You need to have an account (<login_username>) to login in to the target machine
 ansible-playbook --user=<login_username> -k -i hosts site.yml --ask-become-pass
 ```
 
+
+  - For the list of tasks performed by the Ansible Playbook, <a href="https://github.com/TempleDSS/data-capsule-appliance/wiki/Ansible-Playbook-Tasks">Click here</a>
+
 3. Then you will be prompted to enter two password as following. Enter the login remote user password for the first prompt and that user's
 sudo password for the second prompt.
 
