@@ -1,0 +1,33 @@
+# Eclipse files #
+.classpath
+.project
+.settings/
+
+# Build files #
+target/
+.idea/*
+webservice/projectFilesBackup/sloan-ws.iml
+
+webservice/projectFilesBackup/sloan-ws.ipr
+
+webservice/sloan-ws.iml
+
+webservice/sloan-ws.ipr
+
+webservice/sloan-ws.iws
+
+webservice/.idea/
+
+.idea/
+**/*.iml
+
+/out/
+/sloan-ws-1.2-SNAPSHOT/
+/tightvnc-tls/.gradle/
+/notes
+webservice/src/main/resources/dc-migration/mysql-dumps
+/webservice/DC-API-Image-table-migration.png
+/.DS_Store
+/webservice/.DS_Store
+
+
