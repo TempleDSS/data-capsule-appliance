@@ -9,13 +9,13 @@
 # Add the full path of the script directory to the SCRIPT_DIR variable 
 - name: Configure qemu-ifup
   lineinfile:
-    path: "{{ GIT_CLONE_DIR }}/HTRC Dependencies/backend/qemu-ifup"
+    path: "{{ GIT_CLONE_DIR }}/HTRC-Dependencies/backend/qemu-ifup"
     regexp: '^SCRIPT_DIR='
     line: "SCRIPT_DIR={{ SCRIPT_DIR }}"
 
 - name: Copy and replace qemu-ifup in the /etc directory
   become: true
-  command: "cp {{ GIT_CLONE_DIR }}/HTRC Dependencies/backend/qemu-ifup /etc/qemu-ifup"
+  command: "cp {{ GIT_CLONE_DIR }}/HTRC-Dependencies/backend/qemu-ifup /etc/qemu-ifup"
 
 
 # Cleans and configures the scripts
@@ -27,7 +27,7 @@
 
 - name: Copy backend scripts to the SCRIPTS_DIR 
   become: true
-  command: "mv {{ GIT_CLONE_DIR }}/HTRC Dependencies/backend {{ SCRIPT_DIR }}"
+  command: "mv {{ GIT_CLONE_DIR }}/HTRC-Dependencies/backend {{ SCRIPT_DIR }}"
 
 # Modify permisions for the script directory
 # Move command above creates the SCRIPT_DIR
