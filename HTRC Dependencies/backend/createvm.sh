@@ -19,7 +19,7 @@ DD_BLOCK_SIZE=2048k
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 . $SCRIPT_DIR/capsules.cfg
 
-FREE_HOSTS=/home/htrcvirt/free_hosts
+FREE_HOSTS=/home/dc-host/free_hosts
 UBUNTU_16_04_IMAGE=ubuntu-16-04.img
 UBUNTU_12_04_IMAGE=uncamp2015-demo.img
 
@@ -228,7 +228,7 @@ EOF
 fi
 
 
-if [ "$IMAGE" != "/home/htrcvirt/images/uncamp2015-demo.img" ]; then
+if [ "$IMAGE" != "/home/dc-host/images/uncamp2015-demo.img" ]; then
     logger "$VM_DIR:$IMAGE:$VM_IP_ADDR:$VNC_PORT - Enabling negotiator."
     cat <<EOF >> $VM_DIR/config
 
@@ -262,7 +262,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #Create  mounts for the secure volume and the spool volume 
-if [ "$IMAGE" = "/home/htrcvirt/images/uncamp2015-demo.img" ]; then
+if [ "$IMAGE" = "/home/dc-host/images/uncamp2015-demo.img" ]; then
     MKFS_RES=$(echo "y" | /sbin/mkfs.ntfs -F -f -L "secure_volume" $VM_DIR/${SECURE_VOL_NAME}.tmp 2>&1)
 
     if [ $? -ne 0 ]; then
