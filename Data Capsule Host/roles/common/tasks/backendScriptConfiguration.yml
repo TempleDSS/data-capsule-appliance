@@ -3,7 +3,6 @@
 - git:
    repo: 'https://github.com/TempleDSS/data-capsule-appliance.git'
    dest: "{{ GIT_CLONE_DIR }}"
-   version: IMSL
    force: yes
 
 # Add the full path of the script directory to the SCRIPT_DIR variable 
