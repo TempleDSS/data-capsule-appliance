@@ -1,6 +1,6 @@
 # Data Capsule Appliance Host
 
-This projects provides the code for automating the Data Capsule Host and target deployment. 
+This projects provides the code for automating the Data Capsule Host and Data Capsule deployment. 
 
 # Data Capsule VM on Ubuntu ??
 
@@ -24,23 +24,23 @@ git clone https://github.com/TempleDSS/data-capsule-appliance.git and cd into da
 
 ### Prerequisites
 
-#### Host Machine
-You need to install Ansible in the machine that you are using for host provisioning. 
+#### Host Configuration Machine
+You need to install Ansible in the configuration machine that you are using for host provisioning. 
 Refer to http://docs.ansible.com/ansible/latest/intro_installation.html for more details. 
 
 Also Install the python and python passlib modules (http://passlib.readthedocs.io/en/stable/install.html) in the same machine. 
 
-#### Target machine (Where DC would be deployed)
+#### Host machine (Where DC would be deployed)
 
-In the target machine, you need to have ssh and Ansible installed.
+In the host machine, you need to have ssh and Ansible installed.
 
-You need to have an account (<login_username>) to login in to the target machine with sudo access. 
+You need to have an account (<login_username>) to login in to the host machine with sudo access. 
 
 ### Deploying
 
-1. Add the IP Addresses of the target machines that you need to provision in the hosts file. 
+1. Add the IP Addresses of the host machines that you need to provision in the hosts file. 
 
-2. Then run the following command inside the cloned directory. Be sure to replace the <login_username> with your remote target machine username. 
+2. Then run the following command inside the cloned directory. Be sure to replace the <login_username> with your remote host machine username. 
 
 ```
 ansible-playbook --user=<login_username> -k -i hosts site.yml --ask-become-pass
