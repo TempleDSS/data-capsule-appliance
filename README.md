@@ -7,3 +7,7 @@ This repository contains components necessary to set up and run a data capsule a
 
 
 ### [Wiki](https://github.com/TempleDSS/data-capsule-appliance/wiki)
+
+# Background 
+
+This appliance was adapted from [HTRC's data capsules](https://github.com/htrc/HTRC-DataCapsules) through an IMLS grant. Prior work in this direction, including documentation relating to HTRC's repo, are available on [Data-to-Insight](https://data-to-insight-center.github.io/data-capsule-appliance/intro/).
