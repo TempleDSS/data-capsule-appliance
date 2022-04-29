@@ -1,3 +1,5 @@
+### The code as well as the documentation in this directory are a modified version of the [HTRC IMSL repository](https://github.com/htrc/HTRC-DataCapsules/tree/IMSL)
+
 HTRC Data Capsules
 ================================
 
